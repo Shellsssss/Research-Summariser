@@ -11,8 +11,9 @@ from rouge_score import rouge_scorer
 
 
 # Load environment variables
-load_dotenv()
-OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
+
+OPENROUTER_API_KEY = st.secrets["OPENROUTER_API_KEY"]
+
 
 
 st.set_page_config(page_title="AI Paper Summarizer & QnA", layout="wide")
