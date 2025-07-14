@@ -11,9 +11,7 @@ from rouge_score import rouge_scorer
 
 
 # Load environment variables
-
 OPENROUTER_API_KEY = st.secrets["OPENROUTER_API_KEY"]
-
 
 
 st.set_page_config(page_title="AI Paper Summarizer & QnA", layout="wide")
@@ -105,7 +103,7 @@ def query_cypheralpha(prompt):
     data = {
         "model": "mistralai/mistral-7b-instruct:free",
         "messages": [
-            {"role": "system", "content":(
+            {"role": "system", "content": (
                 "You are a world-class scientific writing assistant. When summarizing a research paper, always follow this two-part structure:"\
                 "\n\nBEGINNER OVERVIEW — 4–6 concise bullets in plain language that state every key contribution, result, and conclusion."\
                 "\nDEEP DIVE — 2–3 short paragraphs that expand on the core idea, methodology, and significance, retaining essential technical terms and numbers. explain the concepts in complete detail continuing from the beginner overview buliding upto the level of the research paper"\
@@ -147,6 +145,7 @@ if st.session_state.ready_to_process:
                             )
                             for p in parts
                         ])
+                        data["summary"] = summary
                 # Compute ROUGE only once per document
                 if data["summary"] and not data.get("rouge_scores"):
                     data["rouge_scores"] = compute_rouge_scores(data["summary"], data["text"])
