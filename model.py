@@ -138,12 +138,14 @@ if st.session_state.ready_to_process:
                 if not data["summary"]:
                     with st.spinner("Summarizing..."):
                         parts = chunk_text(data["text"])
-                        summary = "\n\n".join([query_cypheralph(
+                        summary = "\n\n".join([
+                            query_cypheralpha(
                                 f"Summarize the passage below to maximise ROUGE when merged with other passages."
                                 "\n• 2–3 concise bullets (simple language; include important technical terms & numbers)."
                                 "\n•2-3 paragraphs Complete DEEP DIVE explanation of the concepts and the technical details in the passage also conncect the points"
                                 f"Passage:\n{p}"
-                            )for p in parts
+                            )
+                            for p in parts
                         ])
                 # Compute ROUGE only once per document
                 if data["summary"] and not data.get("rouge_scores"):
