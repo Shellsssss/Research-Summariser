@@ -103,9 +103,15 @@ def query_cypheralpha(prompt):
         "X-Title": "ResearchPaperApp"
     }
     data = {
-        "model": "openrouter/cypher-alpha:free",
+        "model": "mistralai/mistral-7b-instruct:free",
         "messages": [
-            {"role": "system", "content":"You are an expert assistant for research papers. When summarizing, begin with 4–6 concise bullet points understandable by a beginner that cover all key contributions, then add a brief technical explanation expanding on the core idea. When answering questions, respond accurately and cite chunk references as instructed."},
+            {"role": "system", "content":(
+                "You are a world-class scientific writing assistant. When summarizing a research paper, always follow this two-part structure:"\
+                "\n\nBEGINNER OVERVIEW — 4–6 concise bullets in plain language that state every key contribution, result, and conclusion."\
+                "\nDEEP DIVE — 2–3 short paragraphs that expand on the core idea, methodology, and significance, retaining essential technical terms and numbers. explain the concepts in complete detail continuing from the beginner overview buliding upto the level of the research paper"\
+                "\nAim for maximum factual coverage and readability."\
+                "\nWhen answering questions, rely solely on the provided chunks and list the chunk identifiers cited."\
+            )},
             {"role": "user", "content": prompt}
         ]
     }
@@ -132,8 +138,12 @@ if st.session_state.ready_to_process:
                 if not data["summary"]:
                     with st.spinner("Summarizing..."):
                         parts = chunk_text(data["text"])
-                        summary = "\n\n".join([query_cypheralpha( f"Summarize the following passage in 4–6 concise bullet points for beginners, then add 2–3 sentences that delve deeper into the main idea:\n\n{p}") for p in parts])
-                        data["summary"] = summary
+                        summary = "\n\n".join([query_cypheralph(
+                                f"Summarize the passage below to maximise ROUGE when merged with other passages."
+                                "\n• 2–3 concise bullets (simple language; include important technical terms & numbers)."
+                                "\n•2-3 paragraphs Complete DEEP DIVE explanation of the concepts and the technical details in the passage also conncect the points"
+                                f"Passage:\n{p}"
+                            )
                 # Compute ROUGE only once per document
                 if data["summary"] and not data.get("rouge_scores"):
                     data["rouge_scores"] = compute_rouge_scores(data["summary"], data["text"])
