@@ -60,5 +60,5 @@ Once you have completed the setup, you can run the Streamlit app with the follow
 ```bash
 streamlit run model.py
 ```
-
+The app is easy to deploy via the streamlit community login page, our version of the website is https://research-summarizer.streamlit.app/
 The application will open in a new tab in your web browser. 
