@@ -105,7 +105,7 @@ def query_cypheralpha(prompt):
     data = {
         "model": "openrouter/cypher-alpha:free",
         "messages": [
-            {"role": "system", "content": "You are a helpful assistant for summarizing and answering questions from research papers."},
+            {"role": "system", "content":"You are an expert assistant for research papers. When summarizing, begin with 4–6 concise bullet points understandable by a beginner that cover all key contributions, then add a brief technical explanation expanding on the core idea. When answering questions, respond accurately and cite chunk references as instructed."},
             {"role": "user", "content": prompt}
         ]
     }
@@ -132,7 +132,7 @@ if st.session_state.ready_to_process:
                 if not data["summary"]:
                     with st.spinner("Summarizing..."):
                         parts = chunk_text(data["text"])
-                        summary = "\n\n".join([query_cypheralpha(f"Summarize in 5–7 bullet points:\n\n{p}") for p in parts])
+                        summary = "\n\n".join([query_cypheralpha( f"Summarize the following passage in 4–6 concise bullet points for beginners, then add 2–3 sentences that delve deeper into the main idea:\n\n{p}") for p in parts])
                         data["summary"] = summary
                 # Compute ROUGE only once per document
                 if data["summary"] and not data.get("rouge_scores"):
