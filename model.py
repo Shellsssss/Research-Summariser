@@ -143,7 +143,8 @@ if st.session_state.ready_to_process:
                                 "\n• 2–3 concise bullets (simple language; include important technical terms & numbers)."
                                 "\n•2-3 paragraphs Complete DEEP DIVE explanation of the concepts and the technical details in the passage also conncect the points"
                                 f"Passage:\n{p}"
-                            )
+                            )for p in parts
+                        ])
                 # Compute ROUGE only once per document
                 if data["summary"] and not data.get("rouge_scores"):
                     data["rouge_scores"] = compute_rouge_scores(data["summary"], data["text"])
